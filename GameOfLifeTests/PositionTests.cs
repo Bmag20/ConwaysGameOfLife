@@ -9,10 +9,10 @@ namespace GameOfLifeTests
         public void Equality_ShouldBeTrue_WhenTwoPositionsHaveSameCoordinates()
         {
             // Arrange
-            var position1 = new Position(1, 1);
-            var position2 = new Position(1, 1);
+            var position1 = new Coordinate(1, 1);
+            var position2 = new Coordinate(1, 1);
             // Act
-            var result = position1 == position2;
+            var result = position1.Equals(position2);
             // Assert
             Assert.True(result);
         }
@@ -24,8 +24,8 @@ namespace GameOfLifeTests
         public void Equality_ShouldBeFalse_WhenTwoPositionsHaveDifferentCoordinates(int x, int y)
         {
             // Arrange
-            var position1 = new Position(1, 1);
-            var position2 = new Position(x, y);
+            var position1 = new Coordinate(1, 1);
+            var position2 = new Coordinate(x, y);
             // Act
             var result = position1 == position2;
             // Assert
@@ -36,7 +36,7 @@ namespace GameOfLifeTests
         public void Equality_ShouldBeFalse_WhenComparedToANullObject()
         {
             // Arrange
-            var position = new Position(1, 1);
+            var position = new Coordinate(1, 1);
             // Act
             var result = position.Equals(null);
             // Assert
