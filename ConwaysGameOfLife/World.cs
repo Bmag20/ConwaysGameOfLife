@@ -67,6 +67,10 @@ namespace ConwaysGameOfLife
         {
             return x < 1 ? x + Rows : x > Rows ? x - Rows : x;;
         }
+        // . o o
+        // . . .
+        // o o o`
+        
 
         public void Tick()
         {
