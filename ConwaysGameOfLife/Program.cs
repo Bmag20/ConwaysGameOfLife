@@ -1,4 +1,6 @@
 ﻿using System;
+using ConwaysGameOfLife.Logic;
+using ConwaysGameOfLife.View;
 
 namespace ConwaysGameOfLife
 {
@@ -6,7 +8,11 @@ namespace ConwaysGameOfLife
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var inputHandler = new ConsoleReader();
+            var outputHandler = new ConsoleDisplay();
+            var gameController = new GameController(inputHandler, outputHandler);
+            var world = gameController.SetUpWorld();
+            gameController.RunGame(world);
         }
     }
 }
