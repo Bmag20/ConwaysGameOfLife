@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using ConwaysGameOfLife;
+using ConwaysGameOfLife.Entities;
+using ConwaysGameOfLife.Exceptions;
+using ConwaysGameOfLife.Logic;
 using Xunit;
 
 namespace GameOfLifeTests
@@ -26,12 +29,43 @@ namespace GameOfLifeTests
         }
 
         [Fact]
-        public void NewWorld_ShouldHaveNoLiveCells()
+        public void IsEmpty_ShouldReturnTrue_WhenWorldHasNoLiveCells()
+        {
+            // Arrange
+            var rows = 2;
+            var columns = 2;
+            var world = new World(rows, columns);
+            world.GetCellAt(new Coordinate(1, 1)).IsAlive = false;
+            world.GetCellAt(new Coordinate(1, 2)).IsAlive = false;
+            world.GetCellAt(new Coordinate(2, 1)).IsAlive = false;
+            world.GetCellAt(new Coordinate(2, 2)).IsAlive = false;
+            // Act
+            var result = world.IsEmpty();
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void IsEmpty_ShouldReturnFalse_WhenWorldHasAtLeast1LiveCell()
+        {
+            // Assert
+            var rows = 2;
+            var columns = 2;
+            var world = new World(rows, columns);
+            world.GetCellAt(new Coordinate(1, 1)).IsAlive = true;
+            // Act
+            var result = world.IsEmpty();
+            // Assert
+            Assert.False(result);
+        }
+        
+        [Fact]
+        public void NewWorld_ShouldBeEmpty()
         {
             // Arrange
             var world = new World(Rows, Columns);
             // Act
-            var result = world.Cells.All(c => c.IsAlive == false);
+            var result = world.IsEmpty();
             // Assert
             Assert.True(result);
         }
@@ -45,7 +79,6 @@ namespace GameOfLifeTests
             // Act
             world.SetAliveAt(position);
             // Assert
-            // Assert.True(world.Cells.First(c => c.X == 1 && c.Y == 1).IsAlive);
             Assert.True(world.GetCellAt(position).IsAlive);
         }
 

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using ConwaysGameOfLife.Entities;
+using ConwaysGameOfLife.Exceptions;
 
-namespace ConwaysGameOfLife
+namespace ConwaysGameOfLife.Logic
 {
     public class World
     {
@@ -37,9 +39,14 @@ namespace ConwaysGameOfLife
         public Cell GetCellAt(Coordinate cellPosition)
         {
             var cell = Cells.Find(cell => cell.Position.Equals(cellPosition));
-            return cell ?? throw new InvalidCellException("Cell does not exist");
+            return cell ?? throw new InvalidCellException();
         }
 
+        public bool IsEmpty()
+        {
+            return Cells.All(cell => !cell.IsAlive);
+        }
+        
         public List<Cell> GetNeighbours(Cell cell)
         {
             var neighbours = new List<Cell>();
@@ -67,11 +74,7 @@ namespace ConwaysGameOfLife
         {
             return x < 1 ? x + Rows : x > Rows ? x - Rows : x;;
         }
-        // . o o
-        // . . .
-        // o o o`
         
-
         public void Tick()
         {
             var nextGenCells = new List<Cell>();

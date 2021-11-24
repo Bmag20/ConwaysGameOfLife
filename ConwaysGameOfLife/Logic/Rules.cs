@@ -1,4 +1,4 @@
-namespace ConwaysGameOfLife
+namespace ConwaysGameOfLife.Logic
 {
     public class Rules
     {

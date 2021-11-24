@@ -1,4 +1,6 @@
 using ConwaysGameOfLife;
+using ConwaysGameOfLife.Entities;
+using ConwaysGameOfLife.Logic;
 using Xunit;
 
 namespace GameOfLifeTests

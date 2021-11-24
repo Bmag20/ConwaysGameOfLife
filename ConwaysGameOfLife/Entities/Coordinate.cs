@@ -1,6 +1,6 @@
 using System;
 
-namespace ConwaysGameOfLife
+namespace ConwaysGameOfLife.Entities
 {
     public class Coordinate
     {
