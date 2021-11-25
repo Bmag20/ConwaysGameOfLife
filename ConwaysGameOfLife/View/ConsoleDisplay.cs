@@ -11,17 +11,17 @@ namespace ConwaysGameOfLife.View
             Console.WriteLine(GameInstructions.WelcomeMessage);
         }
 
-        public void AskForNumberOfRows()
+        public void NumberOfRowsPrompt()
         {
             Console.WriteLine(GameInstructions.AskForRows);
         }
 
-        public void AskForNumberOfColumns()
+        public void NumberOfColumnsPrompt()
         {
             Console.WriteLine(GameInstructions.AskForColumns);
         }
 
-        public void AskForLivingCellCoordinates()
+        public void InitialStatePrompt()
         {
             Console.WriteLine(GameInstructions.AskForLivingCellCoordinates);
         }
@@ -29,9 +29,9 @@ namespace ConwaysGameOfLife.View
         public void DisplayWorld(World world)
         {
             Console.Clear();
-            for (int i = 1; i <= world.Rows; i++)
+            for (var i = 1; i <= world.Rows; i++)
             {
-                for (int j = 1; j <= world.Columns; j++)
+                for (var j = 1; j <= world.Columns; j++)
                 {
                     Console.Write(world.GetCellAt(new Coordinate(i, j)).IsAlive ? "😁" : "💀");
                 }

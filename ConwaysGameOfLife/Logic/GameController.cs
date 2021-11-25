@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading;
 using ConwaysGameOfLife.Entities;
 using ConwaysGameOfLife.View;
@@ -22,54 +21,61 @@ namespace ConwaysGameOfLife.Logic
             var rows = GetRowsFromUser();
             var columns = GetColumnsFromUser();
             var world = new World(rows, columns);
-            var liveCellCoordinates = GetLiveCellCoordinatesFromUser();
-            // Move to world
-            foreach (var cellCoordinate in liveCellCoordinates)
-            {
-                world.GetCellAt(cellCoordinate).IsAlive = true;
-            }
+            var seed = GetValidSeed(rows, columns);
+            world.SetInitialState(seed, GameConstants.AliveSymbol, GameConstants.rowSeparator);
             return world;
-        }
-
-        private List<Coordinate> GetLiveCellCoordinatesFromUser()
-        {
-            var coordinates = new List<Coordinate>();
-            _outputHandler.AskForLivingCellCoordinates();
-            var initialState = _inputHandler.GetUserInput();
-            var initialStateArray = initialState.Split(' ');
-            foreach (var t in initialStateArray)
-            {
-                var cell = t.Split(',');
-                var row = int.Parse(cell[0]);
-                var column = int.Parse(cell[1]);
-                coordinates.Add(new Coordinate(row, column));
-            }
-
-            return coordinates;
         }
 
         private int GetRowsFromUser()
         {
-            _outputHandler.AskForNumberOfRows();
+            _outputHandler.NumberOfRowsPrompt();
+
             var rows = GetValidUserInput();
             return rows;
         }
+
         private int GetColumnsFromUser()
         {
-            _outputHandler.AskForNumberOfColumns();
+            _outputHandler.NumberOfColumnsPrompt();
+
             var columns = GetValidUserInput();
             return columns;
         }
 
         private int GetValidUserInput()
         {
-            var userInput = _inputHandler.GetUserInput();
-            while (!InputValidator.IsValidNumber(userInput, 20)) // make it constant
+            while (true)
             {
-                _outputHandler.InvalidInput();
-                userInput = _inputHandler.GetUserInput();
+                try
+                {
+                    var userInput = _inputHandler.GetUserInput();
+                    InputValidator.ValidateDimension(userInput, GameConstants.MaximumGridSize);
+                    return int.Parse(userInput);
+                }
+                catch
+                {
+                    _outputHandler.InvalidInput();
+                }
             }
-            return int.Parse(userInput);
+        }
+        
+        private string GetValidSeed(int rows, int columns)
+        {
+            _outputHandler.InitialStatePrompt();
+            while (true)
+            {
+                try
+                {
+                    var initialState = _inputHandler.GetUserInput();
+                    InputValidator.ValidateWorld(initialState, rows, columns, GameConstants.AliveSymbol,
+                        GameConstants.DeadSymbol, GameConstants.rowSeparator);
+                    return initialState;
+                }
+                catch
+                {
+                    _outputHandler.InvalidInput();
+                }
+            }
         }
 
         public void RunGame(World world)
@@ -78,7 +84,7 @@ namespace ConwaysGameOfLife.Logic
             while (!world.IsEmpty())
             {
                 world.Tick();
-                Thread.Sleep(1000); // change to constant or argument
+                Thread.Sleep(GameConstants.TickDelayInMilliSeconds);
                 _outputHandler.DisplayWorld(world);
             }
         }

@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using ConwaysGameOfLife;
 using ConwaysGameOfLife.Entities;
 using ConwaysGameOfLife.Logic;
 using ConwaysGameOfLife.View;

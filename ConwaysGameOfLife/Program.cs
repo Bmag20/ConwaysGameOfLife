@@ -1,5 +1,4 @@
-﻿using System;
-using ConwaysGameOfLife.Logic;
+﻿using ConwaysGameOfLife.Logic;
 using ConwaysGameOfLife.View;
 
 namespace ConwaysGameOfLife

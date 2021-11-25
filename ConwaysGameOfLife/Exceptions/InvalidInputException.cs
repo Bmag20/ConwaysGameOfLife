@@ -4,9 +4,9 @@ namespace ConwaysGameOfLife.Exceptions
 {
     public class InvalidInputException : Exception
     {
-        public InvalidInputException()
+        public InvalidInputException(string exceptionMessage)
         {
-            Console.WriteLine("Empty input!!");
+            Console.WriteLine($"Invalid input!: {exceptionMessage}");
         }
     }
 }
