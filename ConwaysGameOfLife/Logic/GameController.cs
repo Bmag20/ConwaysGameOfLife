@@ -22,7 +22,7 @@ namespace ConwaysGameOfLife.Logic
             var columns = GetColumnsFromUser();
             var world = new World(rows, columns);
             var seed = GetValidSeed(rows, columns);
-            world.SetInitialState(seed, GameConstants.AliveSymbol, GameConstants.rowSeparator);
+            world.SetInitialState(seed, GameConstants.AliveSymbol, GameConstants.RowSeparator);
             return world;
         }
 
@@ -68,7 +68,7 @@ namespace ConwaysGameOfLife.Logic
                 {
                     var initialState = _inputHandler.GetUserInput();
                     InputValidator.ValidateWorld(initialState, rows, columns, GameConstants.AliveSymbol,
-                        GameConstants.DeadSymbol, GameConstants.rowSeparator);
+                        GameConstants.DeadSymbol, GameConstants.RowSeparator);
                     return initialState;
                 }
                 catch

@@ -5,7 +5,7 @@ namespace ConwaysGameOfLife.Logic
         public const int MaximumGridSize = 10;
         public const char AliveSymbol = 'o';
         public const char DeadSymbol = '.';
-        public const char rowSeparator = '|';
+        public const char RowSeparator = '|';
         public const int TickDelayInMilliSeconds = 1000;
     }
 }

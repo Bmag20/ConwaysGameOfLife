@@ -80,6 +80,7 @@ namespace ConwaysGameOfLife.Entities
             return neighbours;
         }
 
+        
         private int AdjustYCoordinate(int y)
         {
             return y < 1 ? y + Columns : y > Columns ? y - Columns : y;
