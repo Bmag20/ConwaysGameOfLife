@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using ConwaysGameOfLife.Entities;
 using ConwaysGameOfLife.Exceptions;
+using ConwaysGameOfLife.Logic;
 
-namespace ConwaysGameOfLife.Logic
+namespace ConwaysGameOfLife.Entities
 {
     public class World
     {
@@ -46,7 +46,21 @@ namespace ConwaysGameOfLife.Logic
         {
             return Cells.All(cell => !cell.IsAlive);
         }
-        
+
+        public void SetInitialState(string seed, char aliveSymbol, char rowSeparator)
+        {
+            var seedRows = seed.Split(rowSeparator);
+            for (var i = 0; i < Rows; i++)
+            {
+                var rowCells = seedRows[i];
+                for (var j = 0; j < Columns; j++)
+                {
+                    var cell = GetCellAt(new Coordinate(i + 1, j + 1));
+                    cell.IsAlive = rowCells[j] == aliveSymbol;
+                }
+            }
+        }
+
         public List<Cell> GetNeighbours(Cell cell)
         {
             var neighbours = new List<Cell>();
@@ -62,6 +76,7 @@ namespace ConwaysGameOfLife.Logic
                         neighbours.Add(GetCellAt(neighbourPosition));
                 }
             }
+
             return neighbours;
         }
 
@@ -72,9 +87,10 @@ namespace ConwaysGameOfLife.Logic
 
         private int AdjustXCoordinate(int x)
         {
-            return x < 1 ? x + Rows : x > Rows ? x - Rows : x;;
+            return x < 1 ? x + Rows : x > Rows ? x - Rows : x;
+            ;
         }
-        
+
         public void Tick()
         {
             var nextGenCells = new List<Cell>();
@@ -83,12 +99,13 @@ namespace ConwaysGameOfLife.Logic
             {
                 var neighbours = GetNeighbours(cell);
                 var aliveNeighbours = neighbours.Count(neighbour => neighbour.IsAlive);
-                var nextGenCellState = cell.IsAlive ? rules.LiveCellCheck(aliveNeighbours) 
+                var nextGenCellState = cell.IsAlive
+                    ? rules.LiveCellCheck(aliveNeighbours)
                     : rules.DeadCellCheck(aliveNeighbours);
                 nextGenCells.Add(new Cell(cell.Position, nextGenCellState));
             }
+
             Cells = nextGenCells;
         }
     }
 }
-

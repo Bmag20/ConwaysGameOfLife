@@ -8,5 +8,6 @@ namespace ConwaysGameOfLife.View
         {
             return Console.ReadLine();
         }
+
     }
 }

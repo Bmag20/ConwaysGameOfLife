@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using ConwaysGameOfLife;
 using ConwaysGameOfLife.Entities;
 using ConwaysGameOfLife.Exceptions;
 using ConwaysGameOfLife.Logic;
@@ -10,8 +9,8 @@ namespace GameOfLifeTests
 {
     public class WorldTests
     {
-        private const int Rows = 10;
-        private const int Columns = 10;
+        private const int Rows = 3;
+        private const int Columns = 3;
         private readonly Coordinate _validPosition = new(1, 1);
 
         [Fact]
@@ -93,7 +92,30 @@ namespace GameOfLifeTests
             Assert.IsType<InvalidCellException>(exception);
         }
 
+        [Fact]
+        public void SetInitialState_ShouldSetTheInitialStateOfTheWorld()
+        {
+            // Arrange
+            var rows = 3;
+            var columns = 5;
+            var world = new World(rows, columns);
+            var aliveSymbol = 'o';
+            var rowSeparator = '\n';
+            var seed = "o...o\no...o\no...o";
+            var expectedLiveCellCoordinates = new List<Coordinate>
+            {
+                new(1, 1), new(1, 5),
+                new(2, 1), new(2, 5),
+                new(3, 1), new(3, 5)
+            };
+            // Act
+            world.SetInitialState(seed, aliveSymbol, rowSeparator);
+            // Assert
+            Assert.Equal(expectedLiveCellCoordinates, world.Cells.Where(c => c.IsAlive).Select(c => c.Position));
+        }
 
+        
+        
         private bool SameNeighbours(List<Cell> expectedNeighbours, List<Cell> actualNeighbours)
         {
             return expectedNeighbours.Count == actualNeighbours.Count

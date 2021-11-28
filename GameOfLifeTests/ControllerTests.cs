@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using ConwaysGameOfLife;
 using ConwaysGameOfLife.Entities;
 using ConwaysGameOfLife.Logic;
 using ConwaysGameOfLife.View;
@@ -17,11 +16,11 @@ namespace GameOfLifeTests
             // Arrange
             var inputMock = new Mock<IInputHandler>();
             var outputMock = new Mock<IOutputHandler>();
-            var expectedRows = 10;
-            var expectedColumns = 5;
-            var liveCellCoordinate = "1,1";
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{expectedRows}")
-                .Returns($"{expectedColumns}").Returns(liveCellCoordinate);
+            var inputRows = 3;
+            var inputColumns = 5;
+            var inputSeed = "o.o.o|o.o.o|o.o.o";
+            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
+                .Returns($"{inputColumns}").Returns(inputSeed);
             var controller = new GameController(inputMock.Object, outputMock.Object);
             // Act
             var world = controller.SetUpWorld();
@@ -34,17 +33,17 @@ namespace GameOfLifeTests
         {
             // Arrange
             var inputMock = new Mock<IInputHandler>();
-            var expectedRows = 10;
-            var expectedColumns = 5;
-            var liveCellCoordinate = "1,1";
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{expectedRows}")
-                .Returns($"{expectedColumns}").Returns(liveCellCoordinate);
+            var inputRows = 3;
+            var inputColumns = 5;
+            var inputSeed = "o.o.o|o.o.o|o.o.o";
+            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
+                .Returns($"{inputColumns}").Returns(inputSeed);
             var outputMock = new Mock<IOutputHandler>();
             var controller = new GameController(inputMock.Object, outputMock.Object);
             // Act
             var world = controller.SetUpWorld();
             // Assert
-            Assert.Equal(world.Rows, expectedRows);
+            Assert.Equal(world.Rows, inputRows);
         }
         
         [Fact]
@@ -52,16 +51,17 @@ namespace GameOfLifeTests
         {
             // Arrange
             var inputMock = new Mock<IInputHandler>();
-            var expectedRows = 10;
-            var expectedColumns = 5;
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{expectedRows}")
-                .Returns($"{expectedColumns}").Returns("1,1");
+            var inputRows = 3;
+            var inputColumns = 5;
+            var inputSeed = "o.o.o|o.o.o|o.o.o";
+            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
+                .Returns($"{inputColumns}").Returns(inputSeed);
             var outputMock = new Mock<IOutputHandler>();
             var controller = new GameController(inputMock.Object, outputMock.Object);
             // Act
             var world = controller.SetUpWorld();
             // Assert
-            Assert.Equal(world.Columns, expectedColumns);
+            Assert.Equal(world.Columns, inputColumns);
         }
         
         [Fact]
@@ -69,18 +69,17 @@ namespace GameOfLifeTests
         {
             // Arrange
             var inputMock = new Mock<IInputHandler>();
-            var expectedRows = 5;
-            var expectedColumns = 5;
+            var inputRows = 3;
+            var inputColumns = 5;
+            var inputSeed = "o...o|o...o|o...o";
+            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
+                .Returns($"{inputColumns}").Returns(inputSeed);
             var expectedLiveCellCoordinates = new List<Coordinate>
             {
-                new(1, 1),
-                new(3, 3),
-                new(5, 5)
+                new(1, 1), new(1, 5),
+                new(2, 1), new(2, 5),
+                new(3, 1), new(3, 5)
             };
-            var expectedLiveCellsString = string.Join(" ", expectedLiveCellCoordinates.Select(c => $"{c.X},{c.Y}"));
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{expectedRows}")
-                .Returns($"{expectedColumns}")
-                .Returns($"{expectedLiveCellsString}");
             var outputMock = new Mock<IOutputHandler>();
             var controller = new GameController(inputMock.Object, outputMock.Object);
             // Act
@@ -99,30 +98,28 @@ namespace GameOfLifeTests
         {
             // Arrange
             var inputMock = new Mock<IInputHandler>();
-            var expectedRows = 5;
-            var expectedColumns = 5;
-            var expectedLiveCellCoordinates = new List<Coordinate>
+            var inputRows = 3;
+            var inputColumns = 5;
+            var inputSeed = "o.o.o|o.o.o|o.o.o";
+            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
+                .Returns($"{inputColumns}").Returns(inputSeed);
+            var expectedDeadCellCoordinates = new List<Coordinate>
             {
-                new(1, 1),
-                new(3, 3),
-                new(5, 5)
+                new(1, 2), new(1, 4),
+                new(2, 2), new(2, 4),
+                new(3, 2), new(3, 4)
             };
-            var expectedLiveCellsString = string.Join(" ", expectedLiveCellCoordinates.Select(c => $"{c.X},{c.Y}"));
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{expectedRows}")
-                .Returns($"{expectedColumns}")
-                .Returns($"{expectedLiveCellsString}");
             var outputMock = new Mock<IOutputHandler>();
             var controller = new GameController(inputMock.Object, outputMock.Object);
             // Act
             var world = controller.SetUpWorld();
             // Assert
-            Assert.True(AreCellsDeadAt(world, expectedLiveCellCoordinates));
+            Assert.True(AreCellsDeadAt(world, expectedDeadCellCoordinates));
         }
         
         private static bool AreCellsDeadAt(World world, List<Coordinate> coordinates)
         {
-            var cells = world.Cells;
-            return cells.Where(c => !coordinates.Contains(c.Position)).All(c => !c.IsAlive);
+            return coordinates.All(c => !world.GetCellAt(c).IsAlive);
         }
 
         [Fact]
@@ -131,13 +128,13 @@ namespace GameOfLifeTests
             // Arrange
             var inputMock = new Mock<IInputHandler>();
             var invalidRowsInput = "0";
-            var validRowsInput = 5;
-            var validColumnsInput = 5;
-            var validCoordinateInput = "1,1";
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{invalidRowsInput}")
-                .Returns($"{validRowsInput}").Returns($"{validColumnsInput}").Returns(validCoordinateInput);
+            var inputRows = 3;
+            var inputColumns = 5;
+            var inputSeed = "o.o.o|o.o.o|o.o.o";
+            inputMock.SetupSequence(x => x.GetUserInput()).Returns(invalidRowsInput)
+                .Returns($"{inputRows}").Returns($"{inputColumns}").Returns(inputSeed);
             
-            var regularNumberOfCallsToGetUserInput = 3; // 3 times for rows, columns and live cell coordinates
+            var regularNumberOfCallsToGetUserInput = 3; // 1 for rows, 1 for columns and 1 for initial state of world
             var invalidInput = 1;
             var expectedNumberOfCallsToGetUserInput = regularNumberOfCallsToGetUserInput + invalidInput;
             

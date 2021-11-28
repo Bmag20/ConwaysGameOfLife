@@ -1,3 +1,4 @@
+using ConwaysGameOfLife.Entities;
 using ConwaysGameOfLife.Logic;
 
 namespace ConwaysGameOfLife.View
@@ -5,9 +6,9 @@ namespace ConwaysGameOfLife.View
     public interface IOutputHandler
     {
         void DisplayWelcomeMessage();
-        void AskForNumberOfRows();
-        void AskForNumberOfColumns();
-        void AskForLivingCellCoordinates();
+        void NumberOfRowsPrompt();
+        void NumberOfColumnsPrompt();
+        void InitialStatePrompt();
         void DisplayWorld(World world);
         void DisplayGeneration(int generation);
         void DisplayGameOver();

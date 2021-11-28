@@ -2,7 +2,7 @@ namespace ConwaysGameOfLife.Entities
 {
     public class Cell
     {
-        public Coordinate Position { get; set; }
+        public Coordinate Position { get; }
         public bool IsAlive { get; set; }
         
 

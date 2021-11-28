@@ -1,4 +1,3 @@
-using ConwaysGameOfLife;
 using ConwaysGameOfLife.Entities;
 using Xunit;
 
