@@ -1,6 +1,5 @@
 using System;
 using ConwaysGameOfLife.Entities;
-using ConwaysGameOfLife.Logic;
 
 namespace ConwaysGameOfLife.View
 {
@@ -26,6 +25,11 @@ namespace ConwaysGameOfLife.View
             Console.WriteLine(GameInstructions.AskForLivingCellCoordinates);
         }
 
+        public void ReEnterPrompt()
+        {
+            Console.WriteLine(GameInstructions.AskToReEnter);
+        }
+
         public void DisplayWorld(World world)
         {
             Console.Clear();
@@ -47,11 +51,6 @@ namespace ConwaysGameOfLife.View
         public void DisplayGameOver()
         {
             Console.WriteLine(GameInstructions.GameOver);
-        }
-
-        public void InvalidInput()
-        {
-            Console.WriteLine(GameInstructions.InvalidInput);
         }
     }
 }

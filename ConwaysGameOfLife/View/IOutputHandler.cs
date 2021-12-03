@@ -1,5 +1,4 @@
 using ConwaysGameOfLife.Entities;
-using ConwaysGameOfLife.Logic;
 
 namespace ConwaysGameOfLife.View
 {
@@ -9,9 +8,9 @@ namespace ConwaysGameOfLife.View
         void NumberOfRowsPrompt();
         void NumberOfColumnsPrompt();
         void InitialStatePrompt();
+        void ReEnterPrompt();
         void DisplayWorld(World world);
         void DisplayGeneration(int generation);
         void DisplayGameOver();
-        void InvalidInput();
     }
 }

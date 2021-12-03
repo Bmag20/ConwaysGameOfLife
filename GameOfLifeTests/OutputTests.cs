@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using ConwaysGameOfLife.Entities;
-using ConwaysGameOfLife.Logic;
 using ConwaysGameOfLife.View;
 using Xunit;
 

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using ConwaysGameOfLife.Entities;
 using ConwaysGameOfLife.View;
@@ -6,76 +8,13 @@ namespace ConwaysGameOfLife.Logic
 {
     public class GameController
     {
-        private readonly IInputHandler _inputHandler;
         private readonly IOutputHandler _outputHandler;
+        private World World { get; }
 
-        public GameController(IInputHandler inputObject, IOutputHandler outputObject)
+        public GameController(World world, IOutputHandler outputHandler)
         {
-            _inputHandler = inputObject;
-            _outputHandler = outputObject;
-        }
-
-        public World SetUpWorld()
-        {
-            _outputHandler.DisplayWelcomeMessage();
-            var rows = GetRowsFromUser();
-            var columns = GetColumnsFromUser();
-            var world = new World(rows, columns);
-            var seed = GetValidSeed(rows, columns);
-            world.SetInitialState(seed, GameConstants.AliveSymbol, GameConstants.RowSeparator);
-            return world;
-        }
-
-        private int GetRowsFromUser()
-        {
-            _outputHandler.NumberOfRowsPrompt();
-
-            var rows = GetValidUserInput();
-            return rows;
-        }
-
-        private int GetColumnsFromUser()
-        {
-            _outputHandler.NumberOfColumnsPrompt();
-
-            var columns = GetValidUserInput();
-            return columns;
-        }
-
-        private int GetValidUserInput()
-        {
-            while (true)
-            {
-                try
-                {
-                    var userInput = _inputHandler.GetUserInput();
-                    InputValidator.ValidateDimension(userInput, GameConstants.MaximumGridSize);
-                    return int.Parse(userInput);
-                }
-                catch
-                {
-                    _outputHandler.InvalidInput();
-                }
-            }
-        }
-        
-        private string GetValidSeed(int rows, int columns)
-        {
-            _outputHandler.InitialStatePrompt();
-            while (true)
-            {
-                try
-                {
-                    var initialState = _inputHandler.GetUserInput();
-                    InputValidator.ValidateWorld(initialState, rows, columns, GameConstants.AliveSymbol,
-                        GameConstants.DeadSymbol, GameConstants.RowSeparator);
-                    return initialState;
-                }
-                catch
-                {
-                    _outputHandler.InvalidInput();
-                }
-            }
+            World = world;
+            _outputHandler = outputHandler;
         }
 
         public void RunGame(World world)
@@ -83,10 +22,28 @@ namespace ConwaysGameOfLife.Logic
             _outputHandler.DisplayWorld(world);
             while (!world.IsEmpty())
             {
-                world.Tick();
+                Tick();
                 Thread.Sleep(GameConstants.TickDelayInMilliSeconds);
                 _outputHandler.DisplayWorld(world);
             }
+        }
+        
+
+        private void Tick()
+        {
+            var nextGenCells = new List<Cell>();
+            var rules = new Rules();
+            foreach (var cell in World.Cells)
+            {
+                var neighbours = World.GetNeighbours(cell);
+                var aliveNeighbours = neighbours.Count(neighbour => neighbour.IsAlive);
+                var nextGenCellState = cell.IsAlive
+                    ? rules.LiveCellCheck(aliveNeighbours)
+                    : rules.DeadCellCheck(aliveNeighbours);
+                nextGenCells.Add(new Cell(cell.Position, nextGenCellState));
+            }
+
+            World.Cells = nextGenCells;
         }
     }
 }
