@@ -1,5 +1,3 @@
-using System;
-
 namespace ConwaysGameOfLife.Logic
 {
     public static class GameConstants

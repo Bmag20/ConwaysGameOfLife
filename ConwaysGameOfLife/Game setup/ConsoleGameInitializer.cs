@@ -1,4 +1,3 @@
-using ConwaysGameOfLife.Entities;
 using ConwaysGameOfLife.View;
 
 namespace ConwaysGameOfLife.Game_setup
@@ -19,7 +18,6 @@ namespace ConwaysGameOfLife.Game_setup
             _outputHandler.DisplayWelcomeMessage();
             var rows = GetRowsFromUser();
             var columns = GetColumnsFromUser();
-            var world = new World(rows, columns);
             var seed = GetValidSeed(rows, columns);
             return seed;
         }
@@ -76,19 +74,6 @@ namespace ConwaysGameOfLife.Game_setup
             }
         }
         
-        // private void SetInitialState(World world, string seed, char aliveSymbol, char rowSeparator)
-        // {
-        //     var seedRows = seed.Split(rowSeparator);
-        //     for (var i = 0; i < world.Rows; i++)
-        //     {
-        //         var rowCells = seedRows[i];
-        //         for (var j = 0; j < world.Columns; j++)
-        //         {
-        //             var cell = world.GetCellAt(new Coordinate(i + 1, j + 1));
-        //             cell.IsAlive = rowCells[j] == aliveSymbol;
-        //         }
-        //     }
-        // }
 
     }
 }

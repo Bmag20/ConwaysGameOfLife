@@ -17,14 +17,14 @@ namespace ConwaysGameOfLife.Logic
             _outputHandler = outputHandler;
         }
 
-        public void RunGame(World world)
+        public void RunGame()
         {
-            _outputHandler.DisplayWorld(world);
-            while (!world.IsEmpty())
+            _outputHandler.DisplayWorld(World);
+            while (!World.IsEmpty())
             {
                 Tick();
                 Thread.Sleep(GameConstants.TickDelayInMilliSeconds);
-                _outputHandler.DisplayWorld(world);
+                _outputHandler.DisplayWorld(World);
             }
         }
         
