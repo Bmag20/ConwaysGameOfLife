@@ -3,33 +3,8 @@ using ConwaysGameOfLife.Entities;
 
 namespace ConwaysGameOfLife.View
 {
-    public class ConsoleDisplay : IOutputHandler
+    public class ConsoleWorldRenderer : IWorldRenderer
     {
-        public void DisplayWelcomeMessage()
-        {
-            Console.WriteLine(GameInstructions.WelcomeMessage);
-        }
-
-        public void NumberOfRowsPrompt()
-        {
-            Console.WriteLine(GameInstructions.AskForRows);
-        }
-
-        public void NumberOfColumnsPrompt()
-        {
-            Console.WriteLine(GameInstructions.AskForColumns);
-        }
-
-        public void InitialStatePrompt()
-        {
-            Console.WriteLine(GameInstructions.AskForLivingCellCoordinates);
-        }
-
-        public void ReEnterPrompt()
-        {
-            Console.WriteLine(GameInstructions.AskToReEnter);
-        }
-
         public void DisplayWorld(World world)
         {
             Console.Clear();
@@ -39,6 +14,7 @@ namespace ConwaysGameOfLife.View
                 {
                     Console.Write(world.GetCellAt(new Coordinate(i, j)).IsAlive ? "😁" : "💀");
                 }
+
                 Console.WriteLine();
             }
         }

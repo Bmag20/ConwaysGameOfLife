@@ -12,7 +12,7 @@ namespace GameOfLifeTests
         {
             // Arrange
             var inputMock = new Mock<IInputHandler>();
-            var outputMock = new Mock<IOutputHandler>();
+            var outputMock = new Mock<IPrompter>();
             var inputRows = 3;
             var inputColumns = 5;
             var inputSeed = "o.o.o|o.o.o|o.o.o";
@@ -34,7 +34,7 @@ namespace GameOfLifeTests
              var inputSeed = "o.o.o|o.o.o|o.o.o";
              inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
                  .Returns($"{inputColumns}").Returns(inputSeed);
-             var outputMock = new Mock<IOutputHandler>();
+             var outputMock = new Mock<IPrompter>();
              var controller = new ConsoleGameInitializer(inputMock.Object, outputMock.Object);
              // Act
              var world = controller.GenerateSeed();
@@ -116,7 +116,7 @@ namespace GameOfLifeTests
             var invalidInput = 1;
             var expectedNumberOfCallsToGetUserInput = regularNumberOfCallsToGetUserInput + invalidInput;
              
-            var outputMock = new Mock<IOutputHandler>();
+            var outputMock = new Mock<IPrompter>();
             var controller = new ConsoleGameInitializer(inputMock.Object, outputMock.Object);
             // Act
             var world = controller.GenerateSeed();
@@ -140,7 +140,7 @@ namespace GameOfLifeTests
             var invalidInput = 1;
             var expectedNumberOfCallsToGetUserInput = regularNumberOfCallsToGetUserInput + invalidInput;
              
-            var outputMock = new Mock<IOutputHandler>();
+            var outputMock = new Mock<IPrompter>();
             var controller = new ConsoleGameInitializer(inputMock.Object, outputMock.Object);
             // Act
             var world = controller.GenerateSeed();
@@ -166,7 +166,7 @@ namespace GameOfLifeTests
             var invalidInput = 2;
             var expectedNumberOfCallsToGetUserInput = regularNumberOfCallsToGetUserInput + invalidInput;
              
-            var outputMock = new Mock<IOutputHandler>();
+            var outputMock = new Mock<IPrompter>();
             var controller = new ConsoleGameInitializer(inputMock.Object, outputMock.Object);
             // Act
             var world = controller.GenerateSeed();

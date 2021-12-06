@@ -14,7 +14,7 @@ namespace ConwaysGameOfLife.Game_setup
                 case 0 :
                 {
                     var consoleReader = new ConsoleReader();
-                    var consolePrompter = new ConsoleDisplay();
+                    var consolePrompter = new ConsolePrompter();
                     return new ConsoleGameInitializer(consoleReader, consolePrompter);
                 }
                 case 2 when IsFileArgs(args):

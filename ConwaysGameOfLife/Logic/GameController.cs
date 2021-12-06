@@ -8,26 +8,25 @@ namespace ConwaysGameOfLife.Logic
 {
     public class GameController
     {
-        private readonly IOutputHandler _outputHandler;
+        private readonly IWorldRenderer _renderer;
         private World World { get; }
 
-        public GameController(World world, IOutputHandler outputHandler)
+        public GameController(World world, IWorldRenderer outputHandler)
         {
             World = world;
-            _outputHandler = outputHandler;
+            _renderer = outputHandler;
         }
 
         public void RunGame()
         {
-            _outputHandler.DisplayWorld(World);
+            _renderer.DisplayWorld(World);
             while (!World.IsEmpty())
             {
                 Tick();
                 Thread.Sleep(GameConstants.TickDelayInMilliSeconds);
-                _outputHandler.DisplayWorld(World);
+                _renderer.DisplayWorld(World);
             }
         }
-        
 
         private void Tick()
         {

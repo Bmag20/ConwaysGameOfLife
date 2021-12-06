@@ -5,9 +5,9 @@ namespace ConwaysGameOfLife.Game_setup
     public class ConsoleGameInitializer : ISeedInitializer
     {
         private readonly IInputHandler _inputHandler;
-        private readonly IOutputHandler _outputHandler;
+        private readonly IPrompter _outputHandler;
 
-        public ConsoleGameInitializer(IInputHandler inputObject, IOutputHandler outputObject)
+        public ConsoleGameInitializer(IInputHandler inputObject, IPrompter outputObject)
         {
             _inputHandler = inputObject;
             _outputHandler = outputObject;

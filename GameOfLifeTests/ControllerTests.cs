@@ -1,8 +1,10 @@
 using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using ConwaysGameOfLife.Entities;
 using ConwaysGameOfLife.Logic;
 using ConwaysGameOfLife.View;
+using Moq;
 using Xunit;
 
 namespace GameOfLifeTests
@@ -11,31 +13,77 @@ namespace GameOfLifeTests
     {
         private const string AliveSymbol = "😁";
         private const string DeadSymbol = "💀";
-        
+
         [Fact]
-         public void RunGame_ShouldDisplayGenerationsUntilThereAreLiveCellsInTheWorld()
+        public void RunGame_ShouldTickTheWorldAsPerTheRules()
+        {
+            // Arrange
+            var mockDisplay = new MockRenderer();
+            var seed = "oo.|o..|...";
+            var world = new World(seed);
+            var initialState = world.Cells;
+            var controller = new GameController(world, mockDisplay);
+            // Next generations with the given seed will have all live cells followed by the generation with no live cells
+            // ooo|ooo|ooo
+            var firstGenWorld = new World("ooo|ooo|ooo");
+            // ...|...|...
+            var secondGenWorld = new World("...|...|...");
+            
+            // Act
+            controller.RunGame();
+            // Assert
+            Assert.True(IsSameWorldState(mockDisplay.WorldStatesToDisplay[0], initialState));
+            Assert.True(IsSameWorldState(mockDisplay.WorldStatesToDisplay[1], firstGenWorld.Cells));
+            Assert.True(IsSameWorldState(mockDisplay.WorldStatesToDisplay[2], secondGenWorld.Cells));
+        }
+
+        private bool IsSameWorldState(List<Cell> world1, List<Cell> world2)
+        {
+            if (world1.Count != world2.Count)
+            {
+                return false;
+            }
+            return !world1.Where((t, i) => t.IsAlive != world2[i].IsAlive).Any();
+        }
+
+        [Fact]
+        public void RunGame_ShouldDisplayWorldTillThereAreNoLiveCellsInTheWorld()
+        {
+            // Arrange
+            var mockRenderer = new Mock<IWorldRenderer>();
+            var seed = "oo.|o..|...";
+            var world = new World(seed);
+            var controller = new GameController(world, mockRenderer.Object);
+            // Next generations with the given seed will have all live cells followed by the generation with no live cells
+            var totalGenerations = 3; // Including seed
+            
+            // Act
+            controller.RunGame();
+            // Assert
+            mockRenderer.Verify(r => r.DisplayWorld(world), Times.Exactly(totalGenerations));
+        }
+        
+        private class MockRenderer : IWorldRenderer
          {
-             // Arrange
-             var output = new StringWriter();
-             //Console.Clear();
-             Console.SetOut(output);
-             output.Flush();
-             var consoleDisplay = new ConsoleDisplay();
-             var seed = "oo.|o..|...";
-             var seedDisplay = $"{AliveSymbol}{AliveSymbol}{DeadSymbol}\n{AliveSymbol}{DeadSymbol}{DeadSymbol}\n{DeadSymbol}{DeadSymbol}{DeadSymbol}";
-             var world = new World(seed);
-             var controller = new GameController(world, consoleDisplay);
-             // next generations will be all alive followed by all dead
-             // ooo|ooo|ooo
-             var firstGenDisplay = $"{AliveSymbol}{AliveSymbol}{AliveSymbol}\n{AliveSymbol}{AliveSymbol}{AliveSymbol}\n{AliveSymbol}{AliveSymbol}{AliveSymbol}";
-             // ...|...|...
-             var secondGenDisplay = $"{DeadSymbol}{DeadSymbol}{DeadSymbol}\n{DeadSymbol}{DeadSymbol}{DeadSymbol}\n{DeadSymbol}{DeadSymbol}{DeadSymbol}";
-             var expectedOutput = seedDisplay + "\n"+ firstGenDisplay +"\n" + secondGenDisplay + "\n";
-             // Act
-             controller.RunGame();
-             // Assert
-             Assert.Equal(expectedOutput, output.ToString());
+             public readonly List<List<Cell>> WorldStatesToDisplay = new();
+
+             public void DisplayWorld(World world)
+             {
+                 var cells = world.Cells;
+                 WorldStatesToDisplay.Add(cells);
+             }
+
+             public void DisplayGeneration(int generation)
+             {
+                 throw new NotImplementedException();
+             }
+
+             public void DisplayGameOver()
+             {
+                 throw new NotImplementedException();
+             }
          }
-     }
+
+    }
     
 }

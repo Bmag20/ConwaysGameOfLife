@@ -16,8 +16,8 @@ namespace ConwaysGameOfLife
                 var gameInitializer = factory.CreateGameInitializer(args);
                 var seed = gameInitializer.GenerateSeed();
                 var world = new World(seed);
-                var outputHandler = new ConsoleDisplay();
-                var gameController = new GameController(world, outputHandler);
+                var worldRenderer = new ConsoleWorldRenderer();
+                var gameController = new GameController(world, worldRenderer);
                 gameController.RunGame();
             }
             catch (Exception e)
