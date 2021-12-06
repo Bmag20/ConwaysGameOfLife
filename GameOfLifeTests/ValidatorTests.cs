@@ -1,7 +1,3 @@
-using ConwaysGameOfLife.Exceptions;
-using ConwaysGameOfLife.Logic;
-using Xunit;
-
 namespace GameOfLifeTests
 {
     public class ValidatorTests

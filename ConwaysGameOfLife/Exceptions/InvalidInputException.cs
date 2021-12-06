@@ -2,9 +2,9 @@ using System;
 
 namespace ConwaysGameOfLife.Exceptions
 {
-    public class InvalidInputException : Exception
+    public class InvalidDimensionException : Exception
     {
-        public InvalidInputException(string exceptionMessage)
+        public InvalidDimensionException(string exceptionMessage)
         {
             Console.WriteLine($"Invalid input!: {exceptionMessage}");
         }

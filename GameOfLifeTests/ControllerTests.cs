@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ConwaysGameOfLife.Entities;
@@ -10,148 +11,79 @@ namespace GameOfLifeTests
 {
     public class ControllerTests
     {
-        [Fact]
-        public void SetUpWorld_ShouldReturnNonNullWorldObject_WhenCalled()
-        {
-            // Arrange
-            var inputMock = new Mock<IInputHandler>();
-            var outputMock = new Mock<IOutputHandler>();
-            var inputRows = 3;
-            var inputColumns = 5;
-            var inputSeed = "o.o.o|o.o.o|o.o.o";
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
-                .Returns($"{inputColumns}").Returns(inputSeed);
-            var controller = new GameController(inputMock.Object, outputMock.Object);
-            // Act
-            var world = controller.SetUpWorld();
-            // Assert
-            Assert.NotNull(world);
-        }
-        
-        [Fact]
-        public void SetUpWorld_ShouldReturnWorldWithUserGivenRows_WhenUserInputsRowsOntoTheConsole()
-        {
-            // Arrange
-            var inputMock = new Mock<IInputHandler>();
-            var inputRows = 3;
-            var inputColumns = 5;
-            var inputSeed = "o.o.o|o.o.o|o.o.o";
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
-                .Returns($"{inputColumns}").Returns(inputSeed);
-            var outputMock = new Mock<IOutputHandler>();
-            var controller = new GameController(inputMock.Object, outputMock.Object);
-            // Act
-            var world = controller.SetUpWorld();
-            // Assert
-            Assert.Equal(world.Rows, inputRows);
-        }
-        
-        [Fact]
-        public void SetUpWorld_ShouldReturnWorldWithUserGivenColumns_WhenUserInputsColumnsOntoTheConsole()
-        {
-            // Arrange
-            var inputMock = new Mock<IInputHandler>();
-            var inputRows = 3;
-            var inputColumns = 5;
-            var inputSeed = "o.o.o|o.o.o|o.o.o";
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
-                .Returns($"{inputColumns}").Returns(inputSeed);
-            var outputMock = new Mock<IOutputHandler>();
-            var controller = new GameController(inputMock.Object, outputMock.Object);
-            // Act
-            var world = controller.SetUpWorld();
-            // Assert
-            Assert.Equal(world.Columns, inputColumns);
-        }
-        
-        [Fact]
-        public void SetUpWorld_ShouldReturnWorldWithLiveCellsAtUserGivenCoordinates()
-        {
-            // Arrange
-            var inputMock = new Mock<IInputHandler>();
-            var inputRows = 3;
-            var inputColumns = 5;
-            var inputSeed = "o...o|o...o|o...o";
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
-                .Returns($"{inputColumns}").Returns(inputSeed);
-            var expectedLiveCellCoordinates = new List<Coordinate>
-            {
-                new(1, 1), new(1, 5),
-                new(2, 1), new(2, 5),
-                new(3, 1), new(3, 5)
-            };
-            var outputMock = new Mock<IOutputHandler>();
-            var controller = new GameController(inputMock.Object, outputMock.Object);
-            // Act
-            var world = controller.SetUpWorld();
-            // Assert
-            Assert.True(AreCellsAliveAt(world, expectedLiveCellCoordinates));
-        }
-        
-        private static bool AreCellsAliveAt(World world, List<Coordinate> coordinates)
-        {
-            return coordinates.All(c => world.GetCellAt(c).IsAlive);
-        }
-        
-        [Fact]
-        public void SetUpWorld_ShouldReturnWorldWithDeadCellsAtCoordinatesOtherThanUserGivenCoordinates()
-        {
-            // Arrange
-            var inputMock = new Mock<IInputHandler>();
-            var inputRows = 3;
-            var inputColumns = 5;
-            var inputSeed = "o.o.o|o.o.o|o.o.o";
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
-                .Returns($"{inputColumns}").Returns(inputSeed);
-            var expectedDeadCellCoordinates = new List<Coordinate>
-            {
-                new(1, 2), new(1, 4),
-                new(2, 2), new(2, 4),
-                new(3, 2), new(3, 4)
-            };
-            var outputMock = new Mock<IOutputHandler>();
-            var controller = new GameController(inputMock.Object, outputMock.Object);
-            // Act
-            var world = controller.SetUpWorld();
-            // Assert
-            Assert.True(AreCellsDeadAt(world, expectedDeadCellCoordinates));
-        }
-        
-        private static bool AreCellsDeadAt(World world, List<Coordinate> coordinates)
-        {
-            return coordinates.All(c => !world.GetCellAt(c).IsAlive);
-        }
+        private const string AliveSymbol = "😁";
+        private const string DeadSymbol = "💀";
 
         [Fact]
-        public void SetUpWorld_ShouldReAskForUserInput_WhenInvalidInputIsGiven()
+        public void RunGame_ShouldTickTheWorldAsPerTheRules()
         {
             // Arrange
-            var inputMock = new Mock<IInputHandler>();
-            var invalidRowsInput = "0";
-            var inputRows = 3;
-            var inputColumns = 5;
-            var inputSeed = "o.o.o|o.o.o|o.o.o";
-            inputMock.SetupSequence(x => x.GetUserInput()).Returns(invalidRowsInput)
-                .Returns($"{inputRows}").Returns($"{inputColumns}").Returns(inputSeed);
+            var mockDisplay = new MockRenderer();
+            var seed = "oo.|o..|...";
+            var world = new World(seed);
+            var initialState = world.Cells;
+            var controller = new GameController(world, mockDisplay);
+            // Next generations with the given seed will have all live cells followed by the generation with no live cells
+            // ooo|ooo|ooo
+            var firstGenWorld = new World("ooo|ooo|ooo");
+            // ...|...|...
+            var secondGenWorld = new World("...|...|...");
             
-            var regularNumberOfCallsToGetUserInput = 3; // 1 for rows, 1 for columns and 1 for initial state of world
-            var invalidInput = 1;
-            var expectedNumberOfCallsToGetUserInput = regularNumberOfCallsToGetUserInput + invalidInput;
-            
-            var outputMock = new Mock<IOutputHandler>();
-            var controller = new GameController(inputMock.Object, outputMock.Object);
             // Act
-            var world = controller.SetUpWorld();
+            controller.RunGame();
             // Assert
-            inputMock.Verify(iMock => iMock.GetUserInput(), Times.Exactly(expectedNumberOfCallsToGetUserInput));
+            Assert.True(IsSameWorldState(mockDisplay.WorldStatesToDisplay[0], initialState));
+            Assert.True(IsSameWorldState(mockDisplay.WorldStatesToDisplay[1], firstGenWorld.Cells));
+            Assert.True(IsSameWorldState(mockDisplay.WorldStatesToDisplay[2], secondGenWorld.Cells));
         }
 
+        private bool IsSameWorldState(List<Cell> world1, List<Cell> world2)
+        {
+            if (world1.Count != world2.Count)
+            {
+                return false;
+            }
+            return !world1.Where((t, i) => t.IsAlive != world2[i].IsAlive).Any();
+        }
 
-        // [Fact]
-        // public void RunGame_ShouldDisplayGenerationsUntilThereAreLiveCellsInTheWorld()
-        // {
-        //     
-        // }
+        [Fact]
+        public void RunGame_ShouldDisplayWorldTillThereAreNoLiveCellsInTheWorld()
+        {
+            // Arrange
+            var mockRenderer = new Mock<IWorldRenderer>();
+            var seed = "oo.|o..|...";
+            var world = new World(seed);
+            var controller = new GameController(world, mockRenderer.Object);
+            // Next generations with the given seed will have all live cells followed by the generation with no live cells
+            var totalGenerations = 3; // Including seed
+            
+            // Act
+            controller.RunGame();
+            // Assert
+            mockRenderer.Verify(r => r.DisplayWorld(world), Times.Exactly(totalGenerations));
+        }
+        
+        private class MockRenderer : IWorldRenderer
+         {
+             public readonly List<List<Cell>> WorldStatesToDisplay = new();
+
+             public void DisplayWorld(World world)
+             {
+                 var cells = world.Cells;
+                 WorldStatesToDisplay.Add(cells);
+             }
+
+             public void DisplayGeneration(int generation)
+             {
+                 throw new NotImplementedException();
+             }
+
+             public void DisplayGameOver()
+             {
+                 throw new NotImplementedException();
+             }
+         }
+
     }
     
 }
