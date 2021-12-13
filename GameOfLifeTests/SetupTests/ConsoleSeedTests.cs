@@ -3,7 +3,7 @@ using ConwaysGameOfLife.View;
 using Moq;
 using Xunit;
 
-namespace GameOfLifeTests
+namespace GameOfLifeTests.SetupTests
 {
     public class ConsoleSeedTests
     {
@@ -18,9 +18,9 @@ namespace GameOfLifeTests
             var inputSeed = "o.o.o|o.o.o|o.o.o";
             inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
                 .Returns($"{inputColumns}").Returns(inputSeed);
-            var controller = new ConsoleGameInitializer(inputMock.Object, outputMock.Object);
+            var controller = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
             // Act
-            var world = controller.GenerateSeed();
+            var world = controller.Generate();
             // Assert
             Assert.NotNull(world);
         }
@@ -35,9 +35,9 @@ namespace GameOfLifeTests
              inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
                  .Returns($"{inputColumns}").Returns(inputSeed);
              var outputMock = new Mock<IPrompter>();
-             var controller = new ConsoleGameInitializer(inputMock.Object, outputMock.Object);
+             var controller = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
              // Act
-             var world = controller.GenerateSeed();
+             var world = controller.Generate();
              // Assert
              Assert.Equal(world, inputSeed);
          }
@@ -117,9 +117,9 @@ namespace GameOfLifeTests
             var expectedNumberOfCallsToGetUserInput = regularNumberOfCallsToGetUserInput + invalidInput;
              
             var outputMock = new Mock<IPrompter>();
-            var controller = new ConsoleGameInitializer(inputMock.Object, outputMock.Object);
+            var controller = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
             // Act
-            var world = controller.GenerateSeed();
+            var world = controller.Generate();
             // Assert
             inputMock.Verify(iMock => iMock.GetUserInput(), Times.Exactly(expectedNumberOfCallsToGetUserInput));
         }
@@ -141,9 +141,9 @@ namespace GameOfLifeTests
             var expectedNumberOfCallsToGetUserInput = regularNumberOfCallsToGetUserInput + invalidInput;
              
             var outputMock = new Mock<IPrompter>();
-            var controller = new ConsoleGameInitializer(inputMock.Object, outputMock.Object);
+            var controller = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
             // Act
-            var world = controller.GenerateSeed();
+            var world = controller.Generate();
             // Assert
             inputMock.Verify(iMock => iMock.GetUserInput(), Times.Exactly(expectedNumberOfCallsToGetUserInput));
         }
@@ -167,9 +167,9 @@ namespace GameOfLifeTests
             var expectedNumberOfCallsToGetUserInput = regularNumberOfCallsToGetUserInput + invalidInput;
              
             var outputMock = new Mock<IPrompter>();
-            var controller = new ConsoleGameInitializer(inputMock.Object, outputMock.Object);
+            var controller = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
             // Act
-            var world = controller.GenerateSeed();
+            var world = controller.Generate();
             // Assert
             inputMock.Verify(iMock => iMock.GetUserInput(), Times.Exactly(expectedNumberOfCallsToGetUserInput));
         }

@@ -1,13 +1,12 @@
 using ConwaysGameOfLife.Exceptions;
+using ConwaysGameOfLife.Logic;
 using ConwaysGameOfLife.View;
 
 namespace ConwaysGameOfLife.Game_setup
 {
-    public class GameInitializerFactory
+    public class SeedGeneratorFactory
     {
-        private readonly string FileDirectory =
-            "/Users/Bhuvana.Maganti/Documents/Projects/ConwaysGameOfLife/ConwaysGameOfLife/Data/";
-        public ISeedInitializer CreateGameInitializer(string[] args)
+        public ISeedGenerator CreateGameInitializer(string[] args)
         {
             switch (args.Length)
             {
@@ -15,19 +14,19 @@ namespace ConwaysGameOfLife.Game_setup
                 {
                     var consoleReader = new ConsoleReader();
                     var consolePrompter = new ConsolePrompter();
-                    return new ConsoleGameInitializer(consoleReader, consolePrompter);
+                    return new ConsoleSeedGenerator(consoleReader, consolePrompter);
                 }
                 case 2 when IsFileArgs(args):
                 {
                     var fileName = args[1];
-                    var filePath = FileDirectory + fileName;
-                    return new FileSeedInitializer(filePath);
+                    var filePath = GameConstants.FileDirectory + fileName;
+                    return new FileSeedGenerator(filePath);
                 }
                 case 4 when IsRandomSeedArgs(args):
                 {
                     var rows = int.Parse(args[1]);
                     var columns = int.Parse(args[3]);
-                    return new RandomSeedInitializer(rows, columns);
+                    return new RandomSeedGenerator(rows, columns);
                 }
                 default:
                     throw new InvalidRunArgumentsException();

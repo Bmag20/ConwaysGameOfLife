@@ -2,7 +2,7 @@ using ConwaysGameOfLife.Exceptions;
 using ConwaysGameOfLife.Game_setup;
 using Xunit;
 
-namespace GameOfLifeTests
+namespace GameOfLifeTests.SetupTests
 {
     public class InitializerFactoryTests
     {
@@ -10,36 +10,36 @@ namespace GameOfLifeTests
         public void CreateGameInitializer_ReturnsConsoleInitializer_WhenArgumentsAreEmpty()
         {
             // Arrange
-            var factory = new GameInitializerFactory();
+            var factory = new SeedGeneratorFactory();
             var args = new string[] { };
             // Act
             var initializer = factory.CreateGameInitializer(args);
             // Assert
-            Assert.IsType<ConsoleGameInitializer>(initializer);
+            Assert.IsType<ConsoleSeedGenerator>(initializer);
         }
         
         [Fact]
         public void CreateGameInitializer_ReturnsFileInitializer_WhenArgumentsAreFileAndFileName()
         {
             // Arrange
-            var factory = new GameInitializerFactory();
+            var factory = new SeedGeneratorFactory();
             var args = new[] {"file", "Glider.txt"};
             // Act
             var initializer = factory.CreateGameInitializer(args);
             // Assert
-            Assert.IsType<FileSeedInitializer>(initializer);
+            Assert.IsType<FileSeedGenerator>(initializer);
         }
         
         [Fact]
         public void CreateGameInitializer_ReturnsRandomInitializer_WhenArgumentsAreRowsAndColumns()
         {
             // Arrange
-            var factory = new GameInitializerFactory();
+            var factory = new SeedGeneratorFactory();
             var args = new [] {"rows", "10", "columns", "10"};
             // Act
             var initializer = factory.CreateGameInitializer(args);
             // Assert
-            Assert.IsType<RandomSeedInitializer>(initializer);
+            Assert.IsType<RandomSeedGenerator>(initializer);
         }
         
         [Theory]
@@ -49,7 +49,7 @@ namespace GameOfLifeTests
         public void CreateGameInitializer_ThrowsArgumentException_WhenArgumentsAreNot2Or4(params string[] args)
         {
             // Arrange
-            var factory = new GameInitializerFactory();
+            var factory = new SeedGeneratorFactory();
             // Act
             var exception = Record.Exception(() => factory.CreateGameInitializer(args));
             // Assert
@@ -67,7 +67,7 @@ namespace GameOfLifeTests
         public void CreateGameInitializer_ThrowsArgumentException_WhenArgumentsAreNotInValidFormat(params string[] args)
         {
             // Arrange
-            var factory = new GameInitializerFactory();
+            var factory = new SeedGeneratorFactory();
             // Act
             var exception = Record.Exception(() => factory.CreateGameInitializer(args));
             // Assert

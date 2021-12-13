@@ -10,6 +10,7 @@ namespace ConwaysGameOfLife.Logic
     {
         private readonly IWorldRenderer _renderer;
         private World World { get; }
+        private int _generation;
 
         public GameController(World world, IWorldRenderer outputHandler)
         {
@@ -20,18 +21,21 @@ namespace ConwaysGameOfLife.Logic
         public void RunGame()
         {
             _renderer.DisplayWorld(World);
-            while (!World.IsEmpty())
+            while (!World.IsEmpty() && GameConstants.GenerationsToDisplay > _generation)
             {
                 Tick();
+                _generation++;
                 Thread.Sleep(GameConstants.TickDelayInMilliSeconds);
                 _renderer.DisplayWorld(World);
+                _renderer.DisplayGeneration(_generation);
             }
+            _renderer.DisplayGameOver();
         }
 
         private void Tick()
         {
             var nextGenCells = new List<Cell>();
-            var rules = new Rules();
+            var rules = new Rules();    
             foreach (var cell in World.Cells)
             {
                 var neighbours = World.GetNeighbours(cell);

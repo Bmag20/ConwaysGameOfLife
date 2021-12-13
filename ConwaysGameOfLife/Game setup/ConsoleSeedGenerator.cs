@@ -1,21 +1,22 @@
+using System;
 using ConwaysGameOfLife.View;
 
 namespace ConwaysGameOfLife.Game_setup
 {
-    public class ConsoleGameInitializer : ISeedInitializer
+    public class ConsoleSeedGenerator : ISeedGenerator
     {
         private readonly IInputHandler _inputHandler;
-        private readonly IPrompter _outputHandler;
+        private readonly IPrompter _prompter;
 
-        public ConsoleGameInitializer(IInputHandler inputObject, IPrompter outputObject)
+        public ConsoleSeedGenerator(IInputHandler inputObject, IPrompter outputObject)
         {
             _inputHandler = inputObject;
-            _outputHandler = outputObject;
+            _prompter = outputObject;
         }
 
-        public string GenerateSeed()
+        public string Generate()
         {
-            _outputHandler.DisplayWelcomeMessage();
+            _prompter.DisplayWelcomeMessage();
             var rows = GetRowsFromUser();
             var columns = GetColumnsFromUser();
             var seed = GetValidSeed(rows, columns);
@@ -24,7 +25,7 @@ namespace ConwaysGameOfLife.Game_setup
         
         private int GetRowsFromUser()
         {
-            _outputHandler.NumberOfRowsPrompt();
+            _prompter.NumberOfRowsPrompt();
 
             var rows = GetValidUserInput();
             return rows;
@@ -32,7 +33,7 @@ namespace ConwaysGameOfLife.Game_setup
 
         private int GetColumnsFromUser()
         {
-            _outputHandler.NumberOfColumnsPrompt();
+            _prompter.NumberOfColumnsPrompt();
 
             var columns = GetValidUserInput();
             return columns;
@@ -48,28 +49,29 @@ namespace ConwaysGameOfLife.Game_setup
                     InputValidator.ValidateDimension(userInput);
                     return int.Parse(userInput);
                 }
-                catch
+                catch(Exception e)
                 {
-                    _outputHandler.ReEnterPrompt();
+                    _prompter.DisplayErrorMessage(e.Message);
+                    _prompter.ReEnterPrompt();
                 }
             }
         }
 
         private string GetValidSeed(int rows, int columns)
         {
-            _outputHandler.InitialStatePrompt();
+            _prompter.InitialStatePrompt();
             while (true)
             {
                 try
                 {
                     var initialState = _inputHandler.GetUserInput();
-                    InputValidator.ValidateWorld(initialState, rows, columns);
+                    InputValidator.ValidateSeed(initialState, rows, columns);
                     return initialState;
                 }
-                catch
+                catch(Exception e)
                 {
-                    // Display exception message here for better readability
-                    _outputHandler.ReEnterPrompt();
+                    _prompter.DisplayErrorMessage(e.Message);
+                    _prompter.ReEnterPrompt();
                 }
             }
         }

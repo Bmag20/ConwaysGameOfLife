@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using ConwaysGameOfLife.Entities;
@@ -7,7 +6,7 @@ using ConwaysGameOfLife.View;
 using Moq;
 using Xunit;
 
-namespace GameOfLifeTests
+namespace GameOfLifeTests.LogicTests
 {
     public class ControllerTests
     {
@@ -75,12 +74,10 @@ namespace GameOfLifeTests
 
              public void DisplayGeneration(int generation)
              {
-                 throw new NotImplementedException();
              }
 
              public void DisplayGameOver()
              {
-                 throw new NotImplementedException();
              }
          }
 

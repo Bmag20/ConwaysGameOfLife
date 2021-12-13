@@ -4,7 +4,7 @@ using ConwaysGameOfLife.Game_setup;
 using ConwaysGameOfLife.Logic;
 using Xunit;
 
-namespace GameOfLifeTests
+namespace GameOfLifeTests.SetupTests
 {
     public class RandomSeedGeneratorTests
     {
@@ -14,9 +14,9 @@ namespace GameOfLifeTests
             // Arrange
             var rows = 3;
             var columns = 3;
-            var randomSeedGenerator = new RandomSeedInitializer(rows, columns);
+            var randomSeedGenerator = new RandomSeedGenerator(rows, columns);
             // Act
-            var seed = randomSeedGenerator.GenerateSeed();
+            var seed = randomSeedGenerator.Generate();
             // Assert
             Assert.Equal(rows, GetRows(seed));
         }
@@ -32,9 +32,9 @@ namespace GameOfLifeTests
             // Arrange
             var rows = 3;
             var columns = 3;
-            var randomSeedGenerator = new RandomSeedInitializer(rows, columns);
+            var randomSeedGenerator = new RandomSeedGenerator(rows, columns);
             // Act
-            var seed = randomSeedGenerator.GenerateSeed();
+            var seed = randomSeedGenerator.Generate();
             // Assert
             Assert.True(HasCorrectColumns(seed, columns));
         }
@@ -50,9 +50,9 @@ namespace GameOfLifeTests
             // Arrange
             var rows = 3;
             var columns = 3;
-            var randomSeedGenerator = new RandomSeedInitializer(rows, columns);
+            var randomSeedGenerator = new RandomSeedGenerator(rows, columns);
             // Act
-            var seed = randomSeedGenerator.GenerateSeed();
+            var seed = randomSeedGenerator.Generate();
             // Assert
             Assert.True(HasCorrectSymbols(seed));
         }
@@ -71,9 +71,9 @@ namespace GameOfLifeTests
         public void Generate_ThrowsInvalidSeedException_WhenInitialisedWithInvalidRowsAndColumns(int rows, int columns)
         {
             // Arrange
-            var randomSeedGenerator = new RandomSeedInitializer(rows, columns);
+            var randomSeedGenerator = new RandomSeedGenerator(rows, columns);
             // Act and Assert
-            Assert.Throws<InvalidDimensionException>(() => randomSeedGenerator.GenerateSeed());
+            Assert.Throws<InvalidDimensionException>(() => randomSeedGenerator.Generate());
         }
     }
 }

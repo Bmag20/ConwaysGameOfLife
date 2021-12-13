@@ -4,7 +4,7 @@ using ConwaysGameOfLife.Game_setup;
 using ConwaysGameOfLife.Logic;
 using Xunit;
 
-namespace GameOfLifeTests
+namespace GameOfLifeTests.SetupTests
 {
     public class FileInitializerTests
     {
@@ -15,10 +15,10 @@ namespace GameOfLifeTests
         {
             // Arrange
             var file = "NonExistentFile.txt";
-            var fileInitializer = new FileSeedInitializer(testFilePath+file);
+            var fileInitializer = new FileSeedGenerator(testFilePath+file);
 
             // Act
-            var exception = Record.Exception(() => fileInitializer.GenerateSeed());
+            var exception = Record.Exception(() => fileInitializer.Generate());
 
             // Assert
             Assert.IsType<FileNotFoundException>(exception);
@@ -29,10 +29,10 @@ namespace GameOfLifeTests
         {
             // Arrange
             var file = "EmptyFile.txt";
-            var fileInitializer = new FileSeedInitializer(testFilePath+file);
+            var fileInitializer = new FileSeedGenerator(testFilePath+file);
 
             // Act
-            var exception = Record.Exception(() => fileInitializer.GenerateSeed());
+            var exception = Record.Exception(() => fileInitializer.Generate());
 
             // Assert
             Assert.IsType<InvalidDimensionException>(exception);
@@ -43,10 +43,10 @@ namespace GameOfLifeTests
         {
             // Arrange
             var file = "InvalidSymbols.txt";
-            var fileInitializer = new FileSeedInitializer(testFilePath+file);
+            var fileInitializer = new FileSeedGenerator(testFilePath+file);
 
             // Act
-            var exception = Record.Exception(() => fileInitializer.GenerateSeed());
+            var exception = Record.Exception(() => fileInitializer.Generate());
 
             // Assert
             Assert.IsType<InvalidSeedException>(exception);
@@ -57,10 +57,10 @@ namespace GameOfLifeTests
         {
             // Arrange
             var file = "VariedLengthRows.txt";
-            var fileInitializer = new FileSeedInitializer(testFilePath+file);
+            var fileInitializer = new FileSeedGenerator(testFilePath+file);
 
             // Act
-            var exception = Record.Exception(() => fileInitializer.GenerateSeed());
+            var exception = Record.Exception(() => fileInitializer.Generate());
 
             // Assert
             Assert.IsType<InvalidSeedException>(exception);
@@ -72,9 +72,9 @@ namespace GameOfLifeTests
             // Arrange
             const string file = "TestPattern.txt";
             var filePath = testFilePath+file;
-            var fileInitializer = new FileSeedInitializer(filePath);
+            var fileInitializer = new FileSeedGenerator(filePath);
             // Act
-            var seed = fileInitializer.GenerateSeed();
+            var seed = fileInitializer.Generate();
             // Assert
             Assert.True(IsExpectedInitialState(seed, filePath));
         }

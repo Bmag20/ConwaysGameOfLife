@@ -1,7 +1,7 @@
 using ConwaysGameOfLife.Entities;
 using Xunit;
 
-namespace GameOfLifeTests
+namespace GameOfLifeTests.EntityTests
 {
     public class PositionTests
     {
