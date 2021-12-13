@@ -50,7 +50,7 @@ namespace ConwaysGameOfLife.Entities
                 {
                     var neighborCoordinate = WrapCoordinate(cellPosition.X + i, cellPosition.Y + j);
                     if (cellPosition == neighborCoordinate) continue;
-                    Cell neighbor = GetCellAt(neighborCoordinate);
+                    var neighbor = GetCellAt(neighborCoordinate);
                     neighbours.Add(neighbor);
                 }
             }

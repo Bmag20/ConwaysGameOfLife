@@ -2,7 +2,7 @@ using ConwaysGameOfLife.Entities;
 using ConwaysGameOfLife.Logic;
 using Xunit;
 
-namespace GameOfLifeTests
+namespace GameOfLifeTests.LogicTests
 {
     public class RulesTests
     {

@@ -7,5 +7,6 @@ namespace ConwaysGameOfLife.View
         void NumberOfColumnsPrompt();
         void InitialStatePrompt();
         void ReEnterPrompt();
+        void DisplayErrorMessage(string errorMessage);
     }
 }

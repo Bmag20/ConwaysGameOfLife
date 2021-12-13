@@ -28,5 +28,10 @@ namespace ConwaysGameOfLife.View
         {
             Console.WriteLine(GameInstructions.AskToReEnter);
         }
+
+        public void DisplayErrorMessage(string errorMessage)
+        {
+            Console.WriteLine($"{errorMessage}!!");
+        }
     }
 }
