@@ -10,9 +10,9 @@ namespace ConwaysGameOfLife
     {
         static void Main(string[] args)
         {
-            var factory = new SeedGeneratorFactory();
             try
             {
+                var factory = new SeedGeneratorFactory();
                 var gameInitializer = factory.CreateGameInitializer(args);
                 var seed = gameInitializer.Generate();
                 var world = new World(seed);
