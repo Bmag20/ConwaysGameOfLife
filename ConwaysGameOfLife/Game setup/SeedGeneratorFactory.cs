@@ -6,7 +6,7 @@ namespace ConwaysGameOfLife.Game_setup
 {
     public class SeedGeneratorFactory
     {
-        public ISeedGenerator CreateGameInitializer(string[] args)
+        public ISeedGenerator CreateSeedGenerator(string[] args)
         {
             switch (args.Length)
             {

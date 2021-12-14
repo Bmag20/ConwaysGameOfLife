@@ -8,10 +8,10 @@ namespace ConwaysGameOfLife.Game_setup
         private readonly IInputHandler _inputHandler;
         private readonly IPrompter _prompter;
 
-        public ConsoleSeedGenerator(IInputHandler inputObject, IPrompter outputObject)
+        public ConsoleSeedGenerator(IInputHandler inputHandler, IPrompter prompter)
         {
-            _inputHandler = inputObject;
-            _prompter = outputObject;
+            _inputHandler = inputHandler;
+            _prompter = prompter;
         }
 
         public string Generate()
@@ -27,7 +27,7 @@ namespace ConwaysGameOfLife.Game_setup
         {
             _prompter.NumberOfRowsPrompt();
 
-            var rows = GetValidUserInput();
+            var rows = GetValidDimension();
             return rows;
         }
 
@@ -35,11 +35,11 @@ namespace ConwaysGameOfLife.Game_setup
         {
             _prompter.NumberOfColumnsPrompt();
 
-            var columns = GetValidUserInput();
+            var columns = GetValidDimension();
             return columns;
         }
 
-        private int GetValidUserInput()
+        private int GetValidDimension()
         {
             while (true)
             {

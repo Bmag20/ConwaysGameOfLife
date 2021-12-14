@@ -13,7 +13,7 @@ namespace GameOfLifeTests.SetupTests
             var factory = new SeedGeneratorFactory();
             var args = new string[] { };
             // Act
-            var initializer = factory.CreateGameInitializer(args);
+            var initializer = factory.CreateSeedGenerator(args);
             // Assert
             Assert.IsType<ConsoleSeedGenerator>(initializer);
         }
@@ -25,7 +25,7 @@ namespace GameOfLifeTests.SetupTests
             var factory = new SeedGeneratorFactory();
             var args = new[] {"file", "Glider.txt"};
             // Act
-            var initializer = factory.CreateGameInitializer(args);
+            var initializer = factory.CreateSeedGenerator(args);
             // Assert
             Assert.IsType<FileSeedGenerator>(initializer);
         }
@@ -37,7 +37,7 @@ namespace GameOfLifeTests.SetupTests
             var factory = new SeedGeneratorFactory();
             var args = new [] {"rows", "10", "columns", "10"};
             // Act
-            var initializer = factory.CreateGameInitializer(args);
+            var initializer = factory.CreateSeedGenerator(args);
             // Assert
             Assert.IsType<RandomSeedGenerator>(initializer);
         }
@@ -51,7 +51,7 @@ namespace GameOfLifeTests.SetupTests
             // Arrange
             var factory = new SeedGeneratorFactory();
             // Act
-            var exception = Record.Exception(() => factory.CreateGameInitializer(args));
+            var exception = Record.Exception(() => factory.CreateSeedGenerator(args));
             // Assert
             Assert.IsType<InvalidRunArgumentsException>(exception);
         }
@@ -69,7 +69,7 @@ namespace GameOfLifeTests.SetupTests
             // Arrange
             var factory = new SeedGeneratorFactory();
             // Act
-            var exception = Record.Exception(() => factory.CreateGameInitializer(args));
+            var exception = Record.Exception(() => factory.CreateSeedGenerator(args));
             // Assert
             Assert.IsType<InvalidRunArgumentsException>(exception);
         }

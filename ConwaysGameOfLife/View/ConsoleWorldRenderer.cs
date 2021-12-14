@@ -24,7 +24,7 @@ namespace ConwaysGameOfLife.View
             Console.WriteLine($"Generation: {generation}");
         }
 
-        public void DisplayGameOver()
+        public void DisplayGameEnded()
         {
             Console.WriteLine(GameInstructions.GameOver);
         }
