@@ -14,13 +14,13 @@ namespace ConwaysGameOfLife.Game_setup
 
         public string Generate()
         {
-            var lines = File.ReadAllLines(_filePath);
-            lines = RemoveEmptyLines(lines);
-            var rows = lines.Length;
+            var fileRows = File.ReadAllLines(_filePath);
+            fileRows = RemoveEmptyLines(fileRows);
+            var rows = fileRows.Length;
             InputValidator.ValidateDimension(rows);
-            var columns = lines[0].Length;
+            var columns = fileRows[0].Length;
             InputValidator.ValidateDimension(columns);
-            var seed = ConvertToString(lines);
+            var seed = ConvertToString(fileRows);
             InputValidator.ValidateSeed(seed, rows, columns);
             return seed;
         }

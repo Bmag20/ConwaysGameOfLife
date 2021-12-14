@@ -29,7 +29,7 @@ namespace ConwaysGameOfLife.Logic
                 _renderer.DisplayWorld(World);
                 _renderer.DisplayGeneration(_generation);
             }
-            _renderer.DisplayGameOver();
+            _renderer.DisplayGameEnded();
         }
 
         private void Tick()

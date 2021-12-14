@@ -19,7 +19,7 @@ namespace ConwaysGameOfLife.Game_setup
             InputValidator.ValidateDimension(_rows);
             InputValidator.ValidateDimension(_columns);
             var seed = "";
-            var random = new Random(); // pass as parameter?
+            var random = new Random(); 
             for (var i = 0; i < _rows; i++)
             {
                 for (var j = 0; j < _columns; j++)
