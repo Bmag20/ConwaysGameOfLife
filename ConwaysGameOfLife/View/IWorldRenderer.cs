@@ -6,6 +6,6 @@ namespace ConwaysGameOfLife.View
     {
         void DisplayWorld(World world);
         void DisplayGeneration(int generation);
-        void DisplayGameOver();
+        void DisplayGameEnded();
     }
 }

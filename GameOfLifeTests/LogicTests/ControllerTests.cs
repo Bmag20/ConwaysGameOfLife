@@ -76,7 +76,7 @@ namespace GameOfLifeTests.LogicTests
              {
              }
 
-             public void DisplayGameOver()
+             public void DisplayGameEnded()
              {
              }
          }
