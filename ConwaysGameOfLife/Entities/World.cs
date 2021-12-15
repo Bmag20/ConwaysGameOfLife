@@ -39,7 +39,6 @@ namespace ConwaysGameOfLife.Entities
             return Cells.All(cell => !cell.IsAlive);
         }
         
-        // does it belong here?
         public List<Cell> GetNeighbours(Cell cell)
         {
             var neighbours = new List<Cell>();

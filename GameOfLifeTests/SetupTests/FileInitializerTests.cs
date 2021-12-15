@@ -11,7 +11,7 @@ namespace GameOfLifeTests.SetupTests
         private readonly string testFilePath = "/Users/Bhuvana.Maganti/Documents/Projects/ConwaysGameOfLife/GameOfLifeTests/TestFiles/";
         
         [Fact]
-        public void GenerateSeed_ShouldThrowException_WhenFileDoesNotExist()
+        public void GenerateSeed_ShouldThrowFileNotFoundException_WhenFileDoesNotExist()
         {
             // Arrange
             var file = "NonExistentFile.txt";
@@ -25,7 +25,7 @@ namespace GameOfLifeTests.SetupTests
         }
         
         [Fact]
-        public void GenerateSeed_ShouldThrowException_WhenFileIsEmpty()
+        public void GenerateSeed_ShouldThrowInvalidDimensionException_WhenFileIsEmpty()
         {
             // Arrange
             var file = "EmptyFile.txt";
@@ -39,7 +39,7 @@ namespace GameOfLifeTests.SetupTests
         }
         
         [Fact]
-        public void GenerateSeed_ShouldThrowException_WhenFileHasInvalidSymbols()
+        public void GenerateSeed_ShouldThrowInvalidSeedException_WhenFileHasInvalidSymbols()
         {
             // Arrange
             var file = "InvalidSymbols.txt";
@@ -53,7 +53,7 @@ namespace GameOfLifeTests.SetupTests
         }
         
         [Fact]
-        public void GenerateSeed_ShouldThrowException_WhenFileHasVariedLengthRows()
+        public void GenerateSeed_ShouldThrowInvalidSeedException_WhenFileHasVariedLengthRows()
         {
             // Arrange
             var file = "VariedLengthRows.txt";

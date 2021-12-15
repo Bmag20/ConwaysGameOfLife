@@ -10,8 +10,6 @@ namespace GameOfLifeTests.LogicTests
 {
     public class ControllerTests
     {
-        private const string AliveSymbol = "😁";
-        private const string DeadSymbol = "💀";
 
         [Fact]
         public void RunGame_ShouldTickTheWorldAsPerTheRules()
@@ -38,10 +36,6 @@ namespace GameOfLifeTests.LogicTests
 
         private bool IsSameWorldState(List<Cell> world1, List<Cell> world2)
         {
-            if (world1.Count != world2.Count)
-            {
-                return false;
-            }
             return !world1.Where((t, i) => t.IsAlive != world2[i].IsAlive).Any();
         }
 
