@@ -8,8 +8,6 @@ namespace GameOfLifeTests.LogicTests
     {
         private readonly Coordinate _validPosition = new(1, 1);
 
-        //Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
-
         [Fact]
         public void LiveCellCheck_ShouldBeFalse_WhenLessThanTwoOrThreeLiveNeighbours()
         {
@@ -22,7 +20,7 @@ namespace GameOfLifeTests.LogicTests
             // Assert
             Assert.False(result);
         }
-        
+
         [Theory]
         [InlineData(2)]
         [InlineData(3)]
@@ -36,7 +34,7 @@ namespace GameOfLifeTests.LogicTests
             // Assert
             Assert.True(result);
         }
-        
+
         [Fact]
         public void LiveCellCheck_ShouldBeFalse_WhenMoreThanThreeLiveNeighbours()
         {
@@ -49,7 +47,7 @@ namespace GameOfLifeTests.LogicTests
             // Assert
             Assert.False(result);
         }
-        
+
         [Fact]
         public void DeadCellCheck_ShouldBeTrue_WhenExactlyThreeLiveNeighbours()
         {
@@ -62,7 +60,7 @@ namespace GameOfLifeTests.LogicTests
             // Assert
             Assert.True(result);
         }
-        
+
         [Theory]
         [InlineData(2)]
         [InlineData(4)]
@@ -76,8 +74,5 @@ namespace GameOfLifeTests.LogicTests
             // Assert
             Assert.False(result);
         }
-        
-
     }
-    
 }

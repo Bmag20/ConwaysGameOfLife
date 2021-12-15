@@ -68,7 +68,7 @@ namespace GameOfLifeTests.SetupTests
         [InlineData(1, 0)]
         [InlineData(100, 5)]
         [InlineData(5, 100)]
-        public void Generate_ThrowsInvalidSeedException_WhenInitialisedWithInvalidRowsAndColumns(int rows, int columns)
+        public void Generate_ThrowsInvalidDimensionException_WhenInitialisedWithInvalidRowsOrColumns(int rows, int columns)
         {
             // Arrange
             var randomSeedGenerator = new RandomSeedGenerator(rows, columns);
