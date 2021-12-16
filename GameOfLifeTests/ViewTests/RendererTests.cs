@@ -1,7 +1,7 @@
 using System;
 using System.IO;
-using ConwaysGameOfLife.Entities;
-using ConwaysGameOfLife.View;
+using ConwaysGameOfLife.Source.Entities;
+using ConwaysGameOfLife.Source.View;
 using Xunit;
 
 namespace GameOfLifeTests.ViewTests

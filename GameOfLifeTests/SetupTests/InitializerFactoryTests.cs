@@ -1,5 +1,5 @@
-using ConwaysGameOfLife.Exceptions;
-using ConwaysGameOfLife.Game_setup;
+using ConwaysGameOfLife.Source.Exceptions;
+using ConwaysGameOfLife.Source.Seed_Setup;
 using Xunit;
 
 namespace GameOfLifeTests.SetupTests

@@ -1,14 +1,29 @@
 using System.IO;
-using ConwaysGameOfLife.Exceptions;
-using ConwaysGameOfLife.Game_setup;
-using ConwaysGameOfLife.Logic;
+using ConwaysGameOfLife.Source.Constants;
+using ConwaysGameOfLife.Source.Exceptions;
+using ConwaysGameOfLife.Source.Seed_Setup;
 using Xunit;
 
 namespace GameOfLifeTests.SetupTests
 {
     public class FileInitializerTests
     {
-        private readonly string testFilePath = "/Users/Bhuvana.Maganti/Documents/Projects/ConwaysGameOfLife/GameOfLifeTests/TestFiles/";
+        private readonly string testFilePath = "../../../TestData/";
+        
+        [Fact]
+        public void GenerateSeed_ShouldThrowDirectoryNotFoundException_WhenDirectoryDoesNotExist()
+        {
+            // Arrange
+            var file = "NonExistentFile.txt";
+            var fakeDirectory = "NonExistentDirectory/";
+            var fileInitializer = new FileSeedGenerator(fakeDirectory+file);
+
+            // Act
+            var exception = Record.Exception(() => fileInitializer.Generate());
+
+            // Assert
+            Assert.IsType<DirectoryNotFoundException>(exception);
+        }
         
         [Fact]
         public void GenerateSeed_ShouldThrowFileNotFoundException_WhenFileDoesNotExist()

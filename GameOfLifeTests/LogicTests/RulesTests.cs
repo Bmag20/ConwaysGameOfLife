@@ -1,5 +1,5 @@
-using ConwaysGameOfLife.Entities;
-using ConwaysGameOfLife.Logic;
+using ConwaysGameOfLife.Source.Entities;
+using ConwaysGameOfLife.Source.Logic;
 using Xunit;
 
 namespace GameOfLifeTests.LogicTests
@@ -12,7 +12,7 @@ namespace GameOfLifeTests.LogicTests
         public void LiveCellCheck_ShouldBeFalse_WhenLessThanTwoOrThreeLiveNeighbours()
         {
             // Arrange
-            var cell = new Cell(_validPosition);
+            var cell = new Cell(_validPosition, true);
             var liveNeighborCount = 1;
             var rules = new Rules();
             // Act
@@ -27,7 +27,7 @@ namespace GameOfLifeTests.LogicTests
         public void LiveCellCheck_ShouldBeTrue_WhenTwoOrThreeLiveNeighbours(int liveNeighborCount)
         {
             // Arrange
-            var cell = new Cell(_validPosition);
+            var cell = new Cell(_validPosition, true);
             var rules = new Rules();
             // Act
             var result = rules.LiveCellCheck(liveNeighborCount);
@@ -39,7 +39,7 @@ namespace GameOfLifeTests.LogicTests
         public void LiveCellCheck_ShouldBeFalse_WhenMoreThanThreeLiveNeighbours()
         {
             // Arrange
-            var cell = new Cell(_validPosition);
+            var cell = new Cell(_validPosition, true);
             var liveNeighborCount = 4;
             var rules = new Rules();
             // Act
@@ -52,7 +52,7 @@ namespace GameOfLifeTests.LogicTests
         public void DeadCellCheck_ShouldBeTrue_WhenExactlyThreeLiveNeighbours()
         {
             // Arrange
-            var cell = new Cell(_validPosition);
+            var cell = new Cell(_validPosition, false);
             var liveNeighborCount = 3;
             var rules = new Rules();
             // Act
@@ -67,7 +67,7 @@ namespace GameOfLifeTests.LogicTests
         public void DeadCellCheck_ShouldBeFalse_WhenTwoOrFourLiveNeighbours(int liveNeighborCount)
         {
             // Arrange
-            var cell = new Cell(_validPosition);
+            var cell = new Cell(_validPosition, false);
             var rules = new Rules();
             // Act
             var result = rules.DeadCellCheck(liveNeighborCount);

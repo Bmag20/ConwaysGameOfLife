@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using ConwaysGameOfLife.Entities;
-using ConwaysGameOfLife.Logic;
-using ConwaysGameOfLife.View;
+using ConwaysGameOfLife.Source.Entities;
+using ConwaysGameOfLife.Source.Logic;
+using ConwaysGameOfLife.Source.View;
 using Moq;
 using Xunit;
 
@@ -10,33 +10,40 @@ namespace GameOfLifeTests.LogicTests
 {
     public class ControllerTests
     {
-
         [Fact]
-        public void RunGame_ShouldTickTheWorldAsPerTheRules()
+        public void RunGame_ShouldDisplayWorldWithInitialState()
         {
             // Arrange
             var mockDisplay = new MockRenderer();
-            var seed = "oo.|o..|...";
-            var world = new World(seed);
+            var world = new World("...|ooo|...");
             var initialState = world.Cells;
-            var controller = new GameController(world, mockDisplay);
-            // Next generations with the given seed will have all live cells followed by the generation with no live cells
-            // ooo|ooo|ooo
-            var firstGenWorld = new World("ooo|ooo|ooo");
-            // ...|...|...
-            var secondGenWorld = new World("...|...|...");
-            
+            var transitionHandler = new TransitionHandler();
+            var controller = new GameController(world, transitionHandler, mockDisplay);
             // Act
             controller.RunGame();
             // Assert
             Assert.True(IsSameWorldState(mockDisplay.WorldStatesToDisplay[0], initialState));
-            Assert.True(IsSameWorldState(mockDisplay.WorldStatesToDisplay[1], firstGenWorld.Cells));
-            Assert.True(IsSameWorldState(mockDisplay.WorldStatesToDisplay[2], secondGenWorld.Cells));
         }
-
+        
         private bool IsSameWorldState(List<Cell> world1, List<Cell> world2)
         {
             return !world1.Where((t, i) => t.IsAlive != world2[i].IsAlive).Any();
+        }
+
+        [Fact]
+        public void RunGame_ShouldDisplayWorldWithNextState()
+        {
+            // Arrange
+            var mockDisplay = new MockRenderer();
+            var world = new World("...|ooo|...");
+            var transitionHandler = new TransitionHandler();
+            var controller = new GameController(world, transitionHandler, mockDisplay);
+            var expectedWorld = new World("...|ooo|...");
+            transitionHandler.ApplyTransition(expectedWorld);
+            // Act
+            controller.RunGame();
+            // Assert
+            Assert.True(IsSameWorldState(mockDisplay.WorldStatesToDisplay[1], expectedWorld.Cells));
         }
 
         [Fact]
@@ -46,7 +53,8 @@ namespace GameOfLifeTests.LogicTests
             var mockRenderer = new Mock<IWorldRenderer>();
             var seed = "oo.|o..|...";
             var world = new World(seed);
-            var controller = new GameController(world, mockRenderer.Object);
+            var transition = new TransitionHandler();
+            var controller = new GameController(world, transition, mockRenderer.Object);
             // Next generations with the given seed will have all live cells followed by the generation with no live cells
             var totalGenerations = 3; // Including seed
             

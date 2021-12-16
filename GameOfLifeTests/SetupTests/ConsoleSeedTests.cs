@@ -1,5 +1,5 @@
-using ConwaysGameOfLife.Game_setup;
-using ConwaysGameOfLife.View;
+using ConwaysGameOfLife.Source.Seed_Setup;
+using ConwaysGameOfLife.Source.View;
 using Moq;
 using Xunit;
 
@@ -8,7 +8,7 @@ namespace GameOfLifeTests.SetupTests
     public class ConsoleSeedTests
     {
         [Fact]
-        public void SetUpWorld_ShouldReturnNonNullWorldObject_WhenCalled()
+        public void SetUpWorld_ShouldReturnNonNullSeed_WhenCalled()
         {
             // Arrange
             var inputMock = new Mock<IInputHandler>();
@@ -18,15 +18,15 @@ namespace GameOfLifeTests.SetupTests
             var inputSeed = "o.o.o|o.o.o|o.o.o";
             inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
                 .Returns($"{inputColumns}").Returns(inputSeed);
-            var controller = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
+            var consoleSeedGenerator = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
             // Act
-            var world = controller.Generate();
+            var seed = consoleSeedGenerator.Generate();
             // Assert
-            Assert.NotNull(world);
+            Assert.NotNull(seed);
         }
 
         [Fact]
-        public void SetUpWorld_ShouldReturnSeed_WhenUserInputsValidSeed()
+        public void SetUpWorld_ShouldReturnSeedGivenByUser_WhenUserInputsValidSeed()
         {
             // Arrange
             var inputMock = new Mock<IInputHandler>();
@@ -36,9 +36,9 @@ namespace GameOfLifeTests.SetupTests
             inputMock.SetupSequence(x => x.GetUserInput()).Returns($"{inputRows}")
                 .Returns($"{inputColumns}").Returns(inputSeed);
             var outputMock = new Mock<IPrompter>();
-            var controller = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
+            var consoleSeedGenerator = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
             // Act
-            var world = controller.Generate();
+            var world = consoleSeedGenerator.Generate();
             // Assert
             Assert.Equal(world, inputSeed);
         }
@@ -60,9 +60,9 @@ namespace GameOfLifeTests.SetupTests
             var expectedNumberOfCallsToGetUserInput = regularNumberOfCallsToGetUserInput + invalidInput;
 
             var outputMock = new Mock<IPrompter>();
-            var controller = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
+            var consoleSeedGenerator = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
             // Act
-            var world = controller.Generate();
+            consoleSeedGenerator.Generate();
             // Assert
             inputMock.Verify(iMock => iMock.GetUserInput(), Times.Exactly(expectedNumberOfCallsToGetUserInput));
         }
@@ -84,9 +84,9 @@ namespace GameOfLifeTests.SetupTests
             var expectedNumberOfCallsToGetUserInput = regularNumberOfCallsToGetUserInput + invalidInput;
 
             var outputMock = new Mock<IPrompter>();
-            var controller = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
+            var consoleSeedGenerator = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
             // Act
-            var world = controller.Generate();
+            consoleSeedGenerator.Generate();
             // Assert
             inputMock.Verify(iMock => iMock.GetUserInput(), Times.Exactly(expectedNumberOfCallsToGetUserInput));
         }
@@ -110,9 +110,9 @@ namespace GameOfLifeTests.SetupTests
             var expectedNumberOfCallsToGetUserInput = regularNumberOfCallsToGetUserInput + invalidInput;
 
             var outputMock = new Mock<IPrompter>();
-            var controller = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
+            var consoleSeedGenerator = new ConsoleSeedGenerator(inputMock.Object, outputMock.Object);
             // Act
-            var world = controller.Generate();
+            consoleSeedGenerator.Generate();
             // Assert
             inputMock.Verify(iMock => iMock.GetUserInput(), Times.Exactly(expectedNumberOfCallsToGetUserInput));
         }
