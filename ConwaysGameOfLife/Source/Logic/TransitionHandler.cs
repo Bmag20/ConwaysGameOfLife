@@ -27,11 +27,11 @@ namespace ConwaysGameOfLife.Source.Logic
         {
             var neighbours = new List<Cell>();
             var cellPosition = cell.Position;
-            for (var i = -1; i <= 1; i++)
+            for (var x = -1; x <= 1; x++)
             {
-                for (var j = -1; j <= 1; j++)
+                for (var y = -1; y <= 1; y++)
                 {
-                    var neighborCoordinate = WrapCoordinate(world, cellPosition.X + i, cellPosition.Y + j);
+                    var neighborCoordinate = WrapCoordinate(world, cellPosition.X + x, cellPosition.Y + y);
                     if (cellPosition.Equals(neighborCoordinate)) continue;
                     var neighbor = world.GetCellAt(neighborCoordinate);
                     neighbours.Add(neighbor);

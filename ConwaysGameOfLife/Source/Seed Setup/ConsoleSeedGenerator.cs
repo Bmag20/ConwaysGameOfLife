@@ -59,7 +59,7 @@ namespace ConwaysGameOfLife.Source.Seed_Setup
 
         private string GetValidSeed(int rows, int columns)
         {
-            _prompter.InitialStatePrompt();
+            _prompter.SeedPrompt();
             while (true)
             {
                 try

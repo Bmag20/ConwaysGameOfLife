@@ -10,12 +10,12 @@ namespace ConwaysGameOfLife.Source.Logic
         private readonly IWorldRenderer _renderer;
         private World World { get; }
         private int _currentGeneration;
-        private readonly TransitionHandler _gameOfLifeCore;
+        private readonly TransitionHandler _transitionHandler;
 
-        public GameController(World world, TransitionHandler gameOfLifeCore, IWorldRenderer outputHandler)
+        public GameController(World world, TransitionHandler transitionHandler, IWorldRenderer outputHandler)
         {
             World = world;
-            _gameOfLifeCore = gameOfLifeCore;
+            _transitionHandler = transitionHandler;
             _renderer = outputHandler;
         }
 
@@ -24,7 +24,7 @@ namespace ConwaysGameOfLife.Source.Logic
             _renderer.DisplayWorld(World);
             while (!World.HasAliveCells() && GameConstants.GenerationsToDisplay > _currentGeneration)
             {
-                _gameOfLifeCore.ApplyTransition(World);
+                _transitionHandler.ApplyTransition(World);
                 _currentGeneration++;
                 Thread.Sleep(GameConstants.TickDelayInMilliSeconds);
                 _renderer.DisplayWorld(World);

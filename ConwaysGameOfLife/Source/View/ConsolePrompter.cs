@@ -11,22 +11,22 @@ namespace ConwaysGameOfLife.Source.View
 
         public void NumberOfRowsPrompt()
         {
-            Console.WriteLine(GameInstructions.AskForRows);
+            Console.WriteLine(GameInstructions.RowsPrompt);
         }
 
         public void NumberOfColumnsPrompt()
         {
-            Console.WriteLine(GameInstructions.AskForColumns);
+            Console.WriteLine(GameInstructions.ColumnsPrompt);
         }
 
-        public void InitialStatePrompt()
+        public void SeedPrompt()
         {
-            Console.WriteLine(GameInstructions.AskForLivingCellCoordinates);
+            Console.WriteLine(GameInstructions.SeedPrompt);
         }
 
         public void ReEnterPrompt()
         {
-            Console.WriteLine(GameInstructions.AskToReEnter);
+            Console.WriteLine(GameInstructions.ReenterPrompt);
         }
 
         public void DisplayErrorMessage(string errorMessage)

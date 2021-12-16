@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using ConwaysGameOfLife.Source.Constants;
 using ConwaysGameOfLife.Source.Entities;
 using ConwaysGameOfLife.Source.Logic;
 using ConwaysGameOfLife.Source.View;
@@ -62,6 +63,23 @@ namespace GameOfLifeTests.LogicTests
             controller.RunGame();
             // Assert
             mockRenderer.Verify(r => r.DisplayWorld(world), Times.Exactly(totalGenerations));
+        }
+        
+        [Fact]
+        public void RunGame_ShouldDisplayWorldForAMaximumOfMaxGenerations()
+        {
+            // Arrange
+            var mockRenderer = new Mock<IWorldRenderer>();
+            var seed = ".....|.....|.ooo.|.....|.....";           // Oscillator pattern with no end
+            var world = new World(seed);
+            var transition = new TransitionHandler();
+            var controller = new GameController(world, transition, mockRenderer.Object);
+            var maxGenerations = GameConstants.GenerationsToDisplay + 1; // +1 for displaying initial state
+            
+            // Act
+            controller.RunGame();
+            // Assert
+            mockRenderer.Verify(r => r.DisplayWorld(world), Times.Exactly(maxGenerations));
         }
         
         private class MockRenderer : IWorldRenderer

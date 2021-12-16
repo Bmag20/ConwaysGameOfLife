@@ -29,7 +29,7 @@ namespace ConwaysGameOfLife.Source.View
 
         public void DisplayGameEnded()
         {
-            Console.WriteLine(GameInstructions.GameOver);
+            Console.WriteLine(GameInstructions.GameEndedMessage);
         }
     }
 }

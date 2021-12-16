@@ -4,7 +4,7 @@ using Xunit;
 
 namespace GameOfLifeTests.SetupTests
 {
-    public class InitializerFactoryTests
+    public class SeedGeneratorFactoryTests
     {
         [Fact]
         public void CreateGameInitializer_ReturnsConsoleInitializer_WhenArgumentsAreEmpty()
